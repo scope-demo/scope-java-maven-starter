@@ -1,0 +1,12 @@
+name: Scope Maven JDK v1.8
+on: [push]
+
+jobs:
+  scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run Scope Maven JDK 1.8
+        uses: docker://undefinedlabs/scope-action-maven-jdk18:latest
+        env:
+          SCOPE_APIKEY: ${{secrets.SCOPE_APIKEY}}
