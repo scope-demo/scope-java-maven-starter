@@ -43,6 +43,8 @@ jobs:
   scope:
     runs-on: ubuntu-latest
     steps:
+      - name: Check if SCOPE_APIKEY is set
+        run: if [ "${{secrets.SCOPE_APIKEY}}" = "" ]; then exit 1; fi
       - uses: actions/checkout@v1
       - name: Run Scope Maven JDK 1.8
         uses: docker://undefinedlabs/scope-action-maven-jdk18:latest
