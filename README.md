@@ -33,7 +33,7 @@ The project needs to add the `maven-surefire-plugin` and/or `maven-failsafe-plug
 </plugins>
 ```
 
-Finally, the `scope-action-maven-jdk18` action has been configured in the GitHub Workflow `scope.yml` file:
+Finally, the `scope-for-maven-action` action has been configured in the GitHub Workflow `scope.yml` file:
 
 ```yaml
 name: Scope Maven JDK v1.8
@@ -44,12 +44,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if SCOPE_APIKEY is set
-        run: if [ "${{secrets.SCOPE_APIKEY}}" = "" ]; then exit 1; fi
-      - uses: actions/checkout@v1
-      - name: Run Scope Maven JDK 1.8
-        uses: docker://undefinedlabs/scope-action-maven-jdk18:latest
-        env:
-          SCOPE_APIKEY: ${{secrets.SCOPE_APIKEY}}
+        run: if [ "${{secrets.SCOPE_DSN}}" = "" ]; then exit 1; fi
+      - uses: actions/checkout@master
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8 
+      - name: Scope for Maven Action
+        uses: undefinedlabs/scope-for-maven-action@v1
+        with:
+          dsn: ${{secrets.SCOPE_DSN}}
 ```
 
 For further information about how to install Scope, go to [Scope Java Agent Installation](https://docs.scope.dev/docs/java-installation)
@@ -63,8 +67,8 @@ For further information about how to install Scope, go to [Scope Java Agent Inst
 5. Go to your repository on [GitHub](https://github.com)
 6. Go to `Settings` -> `Secrets`.
 7. Add your API Key secret.
-    - Name: `SCOPE_APIKEY`
-    - Value: `<<your APIKEY>>`
+    - Name: `SCOPE_DSN`
+    - Value: `https://<<your APIKEY>>@app.scope.dev`
 8. Click on `Actions` button and access to the workflow.
 9. Click on `Re-run checks`.
 
