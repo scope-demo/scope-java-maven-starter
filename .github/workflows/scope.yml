@@ -5,8 +5,6 @@ jobs:
   scope:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if SCOPE_APIKEY is set
-        run: if [ "${{secrets.SCOPE_DSN}}" = "" ]; then exit 1; fi
       - uses: actions/checkout@master
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
